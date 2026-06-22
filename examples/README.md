@@ -237,5 +237,5 @@ Call a tool:
 ```console
 curl -i http://localhost:9292 \
   -H "Mcp-Session-Id: YOUR_SESSION_ID" \
-  --json '{"jsonrpc":"2.0","method":"tools/call","id":3,"params":{"name":"ExampleTool","arguments":{"a":5,"b":3}}}'
+  --json '{"jsonrpc":"2.0","method":"tools/call","id":3,"params":{"name":"example_tool","arguments":{"a":5,"b":3}}}'
 ```
