@@ -55,7 +55,7 @@ $ ruby examples/http_server.rb
 The server will start on `http://localhost:9292` and provide:
 
 - **Tools**:
-  - `ExampleTool` - adds two numbers
+  - `example_tool` - adds two numbers
   - `echo` - echoes back messages
 - **Prompts**: `ExamplePrompt` - echoes back arguments as a prompt
 - **Resources**: `test_resource` - returns example content
