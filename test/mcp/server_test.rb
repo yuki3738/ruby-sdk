@@ -1696,6 +1696,44 @@ module MCP
       assert_equal "handler wins", response[:result][:contents].first[:text]
     end
 
+    test "#handle resources/read without uri returns -32602" do
+      response = @server.handle({ jsonrpc: "2.0", method: "resources/read", id: 1, params: {} })
+
+      assert_equal(-32602, response[:error][:code])
+      assert_equal "Invalid params", response[:error][:message]
+      assert_includes response[:error][:data], "uri"
+    end
+
+    test "#handle resources/read without params returns -32602" do
+      response = @server.handle({ jsonrpc: "2.0", method: "resources/read", id: 1 })
+
+      assert_equal(-32602, response[:error][:code])
+      assert_equal "Invalid params", response[:error][:message]
+    end
+
+    test "#handle resources/read with a non-string uri returns -32602 when class-based resources are registered" do
+      server = Server.new(name: "test_server", resources: [GreetingResource])
+
+      response = server.handle(read_resource_request(123))
+
+      assert_equal(-32602, response[:error][:code])
+      assert_equal "Invalid params", response[:error][:message]
+      assert_includes response[:error][:data], "uri"
+    end
+
+    test "#handle resources/read without uri does not invoke a custom handler" do
+      handler_called = false
+      @server.resources_read_handler do |_request|
+        handler_called = true
+        []
+      end
+
+      response = @server.handle({ jsonrpc: "2.0", method: "resources/read", id: 1, params: {} })
+
+      assert_equal(-32602, response[:error][:code])
+      refute handler_called
+    end
+
     test "#handle resources/list and resources/templates/list render class-based and instance-based entries together" do
       server = Server.new(
         name: "test_server",
