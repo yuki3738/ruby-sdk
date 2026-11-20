@@ -59,5 +59,17 @@ module MCP
         { resource: resource.to_h, annotations: annotations, _meta: meta, type: "resource" }.compact
       end
     end
+
+    class ResourceLink
+      attr_reader :resource
+
+      def initialize(resource)
+        @resource = resource
+      end
+
+      def to_h
+        resource.to_h.merge(type: "resource_link")
+      end
+    end
   end
 end
